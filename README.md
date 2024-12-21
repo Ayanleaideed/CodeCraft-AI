@@ -129,7 +129,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 👥 Authors
 
-- Your Name - [@yourusername](https://github.com/Ayanleaideed)
+- Your Name - [@Ayanleaideed](https://github.com/Ayanleaideed)
 
 ## 🙏 Acknowledgments
 
