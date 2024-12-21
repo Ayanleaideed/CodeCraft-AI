@@ -1,0 +1,111 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-center">Coding Assistant</h1>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <form id="questionForm" class="space-y-4">
+                <div>
+                    <label for="question" class="block text-sm font-medium text-gray-700">Enter your coding question:</label>
+                    <textarea id="question" name="question" rows="4" 
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        placeholder="e.g., Write a depth-first search implementation"></textarea>
+                </div>
+                <button type="submit" 
+                    class="w-full bg-indigo-600 text-white rounded-md py-2 px-4 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    Generate Code
+                </button>
+            </form>
+        </div>
+
+        <div id="result" class="hidden">
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                <h2 class="text-xl font-semibold mb-4">Generated Code</h2>
+                <pre id="codeDisplay" class="bg-gray-50 p-4 rounded-md overflow-x-auto"></pre>
+                <div class="mt-4 flex justify-between">
+                    <button onclick="copyCode()" 
+                        class="bg-gray-600 text-white rounded-md py-2 px-4 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                        Copy Code
+                    </button>
+                    <button onclick="executeCode()" 
+                        class="bg-green-600 text-white rounded-md py-2 px-4 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                        Execute Code
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Execution Output</h2>
+                <pre id="outputDisplay" class="bg-gray-50 p-4 rounded-md"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFilename = '';
+
+        document.getElementById('questionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = document.getElementById('question').value;
+            
+            try {
+                const formData = new FormData();
+                formData.append('question', question);
+                
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                document.getElementById('result').classList.remove('hidden');
+                document.getElementById('codeDisplay').textContent = data.code;
+                document.getElementById('outputDisplay').textContent = data.output || data.error || 'No output';
+                currentFilename = data.filename;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('outputDisplay').textContent = 'Error: ' + error.message;
+            }
+        });
+
+        async function executeCode() {
+            if (!currentFilename) return;
+            
+            try {
+                const response = await fetch(`/execute/${currentFilename}`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                document.getElementById('outputDisplay').textContent = data.output || data.error || 'No output';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('outputDisplay').textContent = 'Error: ' + error.message;
+            }
+        }
+
+        function copyCode() {
+            const codeText = document.getElementById('codeDisplay').textContent;
+            navigator.clipboard.writeText(codeText);
+            alert('Code copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
