@@ -129,7 +129,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 👥 Authors
 
-- Your Name - [@yourusername](https://github.com/yourusername)
+- Your Name - [@yourusername](https://github.com/Ayanleaideed)
 
 ## 🙏 Acknowledgments
 
@@ -139,4 +139,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📞 Contact
 
-Project Link: [https://github.com/yourusername/codecraft-ai](https://github.com/yourusername/codecraft-ai)
+Project Link: [https://github.com/yourusername/codecraft-ai](https://github.com/Ayanleaideed/CodeCraft-AI)
