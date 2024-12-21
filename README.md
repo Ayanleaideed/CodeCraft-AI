@@ -27,8 +27,8 @@ An intelligent code generation platform powered by GPT-4 that creates, executes,
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/codecraft-ai.git
-cd codecraft-ai
+git remote add origin https://github.com/Ayanleaideed/CodeCraft-AI.git
+CodeCraft-AI
 ```
 
 2. Set up your environment:
